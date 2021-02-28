@@ -56,6 +56,7 @@ public class Main {
 	public double num,ans;
 	public int  oper;
 	private JLabel lbl1;
+	boolean calculated = false;
 
 	/**
 	 * Create the application.
@@ -83,6 +84,7 @@ public class Main {
 			textField.setText(Double.toString(ans));
 			break;
 		}
+		calculated = true;
 	}
 	
 	/**
@@ -112,6 +114,7 @@ public class Main {
 				oper = 4;
 				textField.setText("");
 				lbl1.setText(num + "/");
+				calculated = false;
 			}
 		});
 		btnDiv.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -123,6 +126,7 @@ public class Main {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				textField.setText("");
+				calculated = false;
 			}
 		});
 		btnC.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -135,7 +139,7 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				int length = textField.getText().length();
 				int number = textField.getText().length() - 1;
-				if(length > 0) {
+				if(length > 0 && !calculated) {
 					StringBuilder back = new StringBuilder(textField.getText());
 					back.deleteCharAt(number);
 					textField.setText(back.toString());
@@ -154,6 +158,7 @@ public class Main {
 				oper = 3;
 				textField.setText("");
 				lbl1.setText(num + "*");
+				calculated = false;
 			}
 		});
 		btnMult.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -164,7 +169,9 @@ public class Main {
 		btn9.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				textField.setText(textField.getText() + "9");
+				if (!calculated) {
+					textField.setText(textField.getText() + "9");
+				}
 			}
 		});
 		btn9.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -175,7 +182,9 @@ public class Main {
 		btn8.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				textField.setText(textField.getText() + "8");
+				if (!calculated) {
+					textField.setText(textField.getText() + "8");
+				}
 			}
 		});
 		btn8.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -186,7 +195,9 @@ public class Main {
 		btn7.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				textField.setText(textField.getText() + "7");
+				if (!calculated) {
+					textField.setText(textField.getText() + "7");
+				}
 			}
 		});
 		btn7.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -197,7 +208,9 @@ public class Main {
 		btn4.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				textField.setText(textField.getText() + "4");
+				if (!calculated) {
+					textField.setText(textField.getText() + "4");
+				}
 			}
 		});
 		btn4.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -208,7 +221,9 @@ public class Main {
 		btn5.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				textField.setText(textField.getText() + "5");
+				if (!calculated) {
+					textField.setText(textField.getText() + "5");
+				}
 			}
 		});
 		btn5.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -219,7 +234,9 @@ public class Main {
 		btn6.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				textField.setText(textField.getText() + "6");
+				if (!calculated) {
+					textField.setText(textField.getText() + "6");
+				}
 			}
 		});
 		btn6.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -234,6 +251,7 @@ public class Main {
 				oper = 2;
 				textField.setText("");
 				lbl1.setText(num + "-");
+				calculated = false;
 			}
 		});
 		btnMinus.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -248,6 +266,7 @@ public class Main {
 				oper = 1;
 				textField.setText("");
 				lbl1.setText(num + "+");
+				calculated = false;
 			}
 		});
 		btnPlus.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -258,7 +277,9 @@ public class Main {
 		btn3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				textField.setText(textField.getText() + "3");
+				if (!calculated) {
+					textField.setText(textField.getText() + "3");
+				}
 			}
 		});
 		btn3.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -269,7 +290,9 @@ public class Main {
 		btn2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				textField.setText(textField.getText() + "1");
+				if (!calculated) {
+					textField.setText(textField.getText() + "1");
+				}
 			}
 		});
 		btn2.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -280,7 +303,9 @@ public class Main {
 		btn1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				textField.setText(textField.getText() + "1");
+				if (!calculated) {
+					textField.setText(textField.getText() + "1");
+				}
 			}
 		});
 		btn1.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -291,7 +316,9 @@ public class Main {
 		btn0.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				textField.setText(textField.getText() + "0");
+				if (!calculated) {
+					textField.setText(textField.getText() + "0");
+				}
 			}
 		});
 		btn0.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -302,7 +329,10 @@ public class Main {
 		btnDot.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				textField.setText(textField.getText() + ".");
+				String content = textField.getText();
+				if (!calculated && !content.contains(".")) {
+						textField.setText(textField.getText() + ".");
+				}
 			}
 		});
 		btnDot.setFont(new Font("Tahoma", Font.BOLD, 18));
