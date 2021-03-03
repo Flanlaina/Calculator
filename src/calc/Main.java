@@ -94,15 +94,15 @@ public class Main {
 		frmCalculator = new JFrame();
 		frmCalculator.setResizable(false);
 		frmCalculator.setTitle("Calculator");
-		frmCalculator.setBounds(100, 100, 420, 456);
+		frmCalculator.setBounds(100, 100, 308, 390);
 		frmCalculator.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frmCalculator.getContentPane().setLayout(null);
 		
 		textField = new JTextField();
 		textField.setEditable(false);
-		textField.setFont(new Font("Tahoma", Font.BOLD, 22));
+		textField.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		textField.setHorizontalAlignment(SwingConstants.RIGHT);
-		textField.setBounds(10, 39, 384, 52);
+		textField.setBounds(10, 39, 270, 40);
 		frmCalculator.getContentPane().add(textField);
 		textField.setColumns(10);
 		
@@ -117,8 +117,8 @@ public class Main {
 				calculated = false;
 			}
 		});
-		btnDiv.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btnDiv.setBounds(305, 102, 89, 52);
+		btnDiv.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnDiv.setBounds(220, 90, 60, 40);
 		frmCalculator.getContentPane().add(btnDiv);
 		
 		btnC = new JButton("C");
@@ -129,8 +129,8 @@ public class Main {
 				calculated = false;
 			}
 		});
-		btnC.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btnC.setBounds(206, 102, 89, 52);
+		btnC.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnC.setBounds(150, 90, 60, 40);
 		frmCalculator.getContentPane().add(btnC);
 		
 		btnBksp = new JButton("<--");
@@ -146,8 +146,8 @@ public class Main {
 				}
 			}
 		});
-		btnBksp.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btnBksp.setBounds(107, 102, 89, 52);
+		btnBksp.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnBksp.setBounds(80, 90, 60, 40);
 		frmCalculator.getContentPane().add(btnBksp);
 		
 		btnMult = new JButton("*");
@@ -161,8 +161,8 @@ public class Main {
 				calculated = false;
 			}
 		});
-		btnMult.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btnMult.setBounds(305, 165, 89, 52);
+		btnMult.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnMult.setBounds(220, 141, 60, 40);
 		frmCalculator.getContentPane().add(btnMult);
 		
 		btn9 = new JButton("9");
@@ -174,8 +174,8 @@ public class Main {
 				}
 			}
 		});
-		btn9.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btn9.setBounds(206, 165, 89, 52);
+		btn9.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn9.setBounds(150, 141, 60, 40);
 		frmCalculator.getContentPane().add(btn9);
 		
 		btn8 = new JButton("8");
@@ -187,8 +187,8 @@ public class Main {
 				}
 			}
 		});
-		btn8.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btn8.setBounds(107, 165, 89, 52);
+		btn8.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn8.setBounds(80, 141, 60, 40);
 		frmCalculator.getContentPane().add(btn8);
 		
 		btn7 = new JButton("7");
@@ -200,8 +200,8 @@ public class Main {
 				}
 			}
 		});
-		btn7.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btn7.setBounds(8, 165, 89, 52);
+		btn7.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn7.setBounds(10, 141, 60, 40);
 		frmCalculator.getContentPane().add(btn7);
 		
 		btn4 = new JButton("4");
@@ -213,8 +213,8 @@ public class Main {
 				}
 			}
 		});
-		btn4.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btn4.setBounds(8, 228, 89, 52);
+		btn4.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn4.setBounds(10, 192, 60, 40);
 		frmCalculator.getContentPane().add(btn4);
 		
 		btn5 = new JButton("5");
@@ -226,8 +226,8 @@ public class Main {
 				}
 			}
 		});
-		btn5.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btn5.setBounds(107, 228, 89, 52);
+		btn5.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn5.setBounds(80, 192, 60, 40);
 		frmCalculator.getContentPane().add(btn5);
 		
 		btn6 = new JButton("6");
@@ -239,8 +239,8 @@ public class Main {
 				}
 			}
 		});
-		btn6.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btn6.setBounds(206, 228, 89, 52);
+		btn6.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn6.setBounds(150, 192, 60, 40);
 		frmCalculator.getContentPane().add(btn6);
 		
 		btnMinus = new JButton("-");
@@ -254,8 +254,8 @@ public class Main {
 				calculated = false;
 			}
 		});
-		btnMinus.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btnMinus.setBounds(305, 228, 89, 52);
+		btnMinus.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnMinus.setBounds(220, 192, 60, 40);
 		frmCalculator.getContentPane().add(btnMinus);
 		
 		btnPlus = new JButton("+");
@@ -269,8 +269,8 @@ public class Main {
 				calculated = false;
 			}
 		});
-		btnPlus.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btnPlus.setBounds(305, 291, 89, 52);
+		btnPlus.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnPlus.setBounds(220, 243, 60, 40);
 		frmCalculator.getContentPane().add(btnPlus);
 		
 		btn3 = new JButton("3");
@@ -282,8 +282,8 @@ public class Main {
 				}
 			}
 		});
-		btn3.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btn3.setBounds(206, 291, 89, 52);
+		btn3.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn3.setBounds(150, 243, 60, 40);
 		frmCalculator.getContentPane().add(btn3);
 		
 		btn2 = new JButton("2");
@@ -295,8 +295,8 @@ public class Main {
 				}
 			}
 		});
-		btn2.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btn2.setBounds(107, 291, 89, 52);
+		btn2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn2.setBounds(80, 243, 60, 40);
 		frmCalculator.getContentPane().add(btn2);
 		
 		btn1 = new JButton("1");
@@ -308,8 +308,8 @@ public class Main {
 				}
 			}
 		});
-		btn1.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btn1.setBounds(8, 291, 89, 52);
+		btn1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn1.setBounds(10, 243, 60, 40);
 		frmCalculator.getContentPane().add(btn1);
 		
 		btn0 = new JButton("0");
@@ -321,8 +321,8 @@ public class Main {
 				}
 			}
 		});
-		btn0.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btn0.setBounds(8, 354, 89, 52);
+		btn0.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn0.setBounds(10, 294, 60, 40);
 		frmCalculator.getContentPane().add(btn0);
 		
 		btnDot = new JButton(".");
@@ -335,8 +335,8 @@ public class Main {
 				}
 			}
 		});
-		btnDot.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btnDot.setBounds(107, 354, 89, 52);
+		btnDot.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnDot.setBounds(80, 294, 60, 40);
 		frmCalculator.getContentPane().add(btnDot);
 		
 		btnEqual = new JButton("=");
@@ -347,14 +347,14 @@ public class Main {
 				lbl1.setText("");
 			}
 		});
-		btnEqual.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btnEqual.setBounds(206, 354, 188, 52);
+		btnEqual.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnEqual.setBounds(150, 294, 130, 40);
 		frmCalculator.getContentPane().add(btnEqual);
 		
 		lbl1 = new JLabel("");
 		lbl1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl1.setForeground(new Color(255, 0, 0));
-		lbl1.setBounds(305, 14, 89, 14);
+		lbl1.setBounds(191, 14, 89, 14);
 		frmCalculator.getContentPane().add(lbl1);
 	}
 }
