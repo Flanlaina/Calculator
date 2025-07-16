@@ -1,640 +1,360 @@
-/**
- * 
- */
 package calc;
-import java.awt.Cursor;
+
+import java.awt.EventQueue;
 import java.awt.Font;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.util.function.Consumer;
-import java.util.regex.Pattern;
+import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
 import java.awt.Color;
-import javax.swing.*;
-import java.lang.Math;
 
-/**
- * @author Admin
- *
- */
 public class Main {
-    private static final int WINDOW_WIDTH = 410;
-    private static final int WINDOW_HEIGHT = 600;
-    private static final int BUTTON_WIDTH = 80;
-    private static final int BUTTON_HEIGHT = 50;
-    private static final int MARGIN_X = 20;
-    private static final int MARGIN_Y = 60;
-    
-    private JFrame window; // Main window
-    private JComboBox<String> comboCalcType, comboTheme;
-    private JTextField inText; // Input
-    private JButton btnC, btnBack, btnMod, btnDiv, btnMul, btnSub, btnAdd,
-            btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9,
-            btnPoint, btnEqual, btnRoot, btnPower, btnLog;
 
-    private char opt = ' '; // Save the operator
-    private boolean go = true; // For calculate with Opt != (=)
-    private boolean addWrite = true; // Connect numbers in display
-    private double val = 0; // Save the value typed for calculation
-    /*
-    Mx Calculator: 
-    X = Row
-    Y = Column
-
-    +-------------------+
-    |   +-----------+   |   y[0]
-    |   |           |   |
-    |   +-----------+   |
-    |                   |
-    |   C  <-   %   /   |   y[1]
-    |   7   8   9   *   |   y[2]
-    |   4   5   6   -   |   y[3]
-    |   1   2   3   +   |   y[4]
-    |   .   0     =     |   y[5]
-    +-------------------+
-     x[0] x[1] x[2] x[3]
-
-*/
-
-/*    
-    +-------------------+
-    |   +-----------+   |   y[0]
-    |   |           |   |
-    |   +-----------+   |
-    |                   |
-    |   0   1   1   3   |   y[1]
-    |   4   5   6   7   |   y[2]
-    |   8   9   10  11  |   y[3]
-    |   12  13  14  15  |   y[4]
-    |   16  17    18    |   y[5]
-    +-------------------+
-     x[0] x[1] x[2] x[3]
-
-*/
+	private JFrame frmCalculator;
+	private JTextField textField;
+	private JButton btnBksp;
+	private JButton btnC;
+	private JButton btnDiv;
+	private JButton btn7;
+	private JButton btn8;
+	private JButton btn9;
+	private JButton btnMult;
+	private JButton btn4;
+	private JButton btn5;
+	private JButton btn6;
+	private JButton btnMinus;
+	private JButton btn1;
+	private JButton btn2;
+	private JButton btn3;
+	private JButton btnPlus;
+	private JButton btn0;
+	private JButton btnDot;
+	private JButton btnEqual;
 
 	/**
-	 * 
-	 */
-	public Main() {
-		// TODO Auto-generated constructor stub
-		window = new JFrame("Calculator");
-	    window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-	    window.setLocationRelativeTo(null); // Move window to center
-
-        comboTheme = initCombo(new String[]{"Simple", "Colored", "DarkTheme"}, 230, 30, "Theme", themeSwitchEventConsumer);
-
-        comboCalcType = initCombo(new String[]{"Standard", "Scientific"}, 20, 30, "Calculator type", calcTypeSwitchEventConsumer);
-
-        int[] x = {MARGIN_X, MARGIN_X + 90, 200, 290, 380};
-        int[] y = {MARGIN_Y, MARGIN_Y + 100, MARGIN_Y + 180, MARGIN_Y + 260, MARGIN_Y + 340, MARGIN_Y + 420};
-
-        inText = new JTextField("0");
-        inText.setBounds(x[0], y[0], 350, 70);
-        inText.setEditable(false);
-        inText.setBackground(Color.WHITE);
-        inText.setFont(new Font("Courier New", Font.PLAIN, 30));
-        window.add(inText);
-
-        btnC = initBtn("C", x[0], y[1], event -> {
-            repaintFont();
-            inText.setText("0");
-            opt = ' ';
-            val = 0;
-        });
-
-        btnBack = initBtn("<-", x[1], y[1], event -> {
-            repaintFont();
-            String str = inText.getText();
-            StringBuilder str2 = new StringBuilder();
-            for (int i = 0; i < (str.length() - 1); i++) {
-                str2.append(str.charAt(i));
-            }
-            if (str2.toString().equals("")) {
-                inText.setText("0");
-            } else {
-                inText.setText(str2.toString());
-            }
-        });
-
-        btnMod = initBtn("mod", x[2], y[1], event -> {
-            repaintFont();
-            if (Pattern.matches("([-]?\\d+[.]\\d*)|(\\d+)", inText.getText()))
-                if (go) {
-                    val = calc(val, inText.getText(), opt);
-                    if (Pattern.matches("[-]?[\\d]+[.][0]*", String.valueOf(val))) {
-                        inText.setText(String.valueOf((int) val));
-                    } else {
-                        inText.setText(String.valueOf(val));
-                    }
-                    opt = '%';
-                    go = false;
-                    addWrite = false;
-                }
-        });
-
-        btnDiv = initBtn("/", x[3], y[1], event -> {
-            repaintFont();
-            if (Pattern.matches("([-]?\\d+[.]\\d*)|(\\d+)", inText.getText()))
-                if (go) {
-                    val = calc(val, inText.getText(), opt);
-                    if (Pattern.matches("[-]?[\\d]+[.][0]*", String.valueOf(val))) {
-                        inText.setText(String.valueOf((int) val));
-                    } else {
-                        inText.setText(String.valueOf(val));
-                    }
-                    opt = '/';
-                    go = false;
-                    addWrite = false;
-                } else {
-                    opt = '/';
-                }
-        });
-
-        btn7 = initBtn("7", x[0], y[2], event -> {
-            repaintFont();
-            if (addWrite) {
-                if (Pattern.matches("[0]*", inText.getText())) {
-                    inText.setText("7");
-                } else {
-                    inText.setText(inText.getText() + "7");
-                }
-            } else {
-                inText.setText("7");
-                addWrite = true;
-            }
-            go = true;
-        });
-
-        btn8 = initBtn("8", x[1], y[2], event -> {
-            repaintFont();
-            if (addWrite) {
-                if (Pattern.matches("[0]*", inText.getText())) {
-                    inText.setText("8");
-                } else {
-                    inText.setText(inText.getText() + "8");
-                }
-            } else {
-                inText.setText("8");
-                addWrite = true;
-            }
-            go = true;
-        });
-
-        btn9 = initBtn("9", x[2], y[2], event -> {
-            repaintFont();
-            if (addWrite) {
-                if (Pattern.matches("[0]*", inText.getText())) {
-                    inText.setText("9");
-                } else {
-                    inText.setText(inText.getText() + "9");
-                }
-            } else {
-                inText.setText("9");
-                addWrite = true;
-            }
-            go = true;
-        });
-
-        btnMul = initBtn("*", x[3], y[2], event -> {
-            repaintFont();
-            if (Pattern.matches("([-]?\\d+[.]\\d*)|(\\d+)", inText.getText()))
-                if (go) {
-                    val = calc(val, inText.getText(), opt);
-                    if (Pattern.matches("[-]?[\\d]+[.][0]*", String.valueOf(val))) {
-                        inText.setText(String.valueOf((int) val));
-                    } else {
-                        inText.setText(String.valueOf(val));
-                    }
-                    opt = '*';
-                    go = false;
-                    addWrite = false;
-                } else {
-                    opt = '*';
-                }
-        });
-
-        btn4 = initBtn("4", x[0], y[3], event -> {
-            repaintFont();
-            if (addWrite) {
-                if (Pattern.matches("[0]*", inText.getText())) {
-                    inText.setText("4");
-                } else {
-                    inText.setText(inText.getText() + "4");
-                }
-            } else {
-                inText.setText("4");
-                addWrite = true;
-            }
-            go = true;
-        });
-
-        btn5 = initBtn("5", x[1], y[3], event -> {
-            repaintFont();
-            if (addWrite) {
-                if (Pattern.matches("[0]*", inText.getText())) {
-                    inText.setText("5");
-                } else {
-                    inText.setText(inText.getText() + "5");
-                }
-            } else {
-                inText.setText("5");
-                addWrite = true;
-            }
-            go = true;
-        });
-
-        btn6 = initBtn("6", x[2], y[3], event -> {
-            repaintFont();
-            if (addWrite) {
-                if (Pattern.matches("[0]*", inText.getText())) {
-                    inText.setText("6");
-                } else {
-                    inText.setText(inText.getText() + "6");
-                }
-            } else {
-                inText.setText("6");
-                addWrite = true;
-            }
-            go = true;
-        });
-
-        btnSub = initBtn("-", x[3], y[3], event -> {
-            repaintFont();
-            if (Pattern.matches("([-]?\\d+[.]\\d*)|(\\d+)", inText.getText()))
-                if (go) {
-                    val = calc(val, inText.getText(), opt);
-                    if (Pattern.matches("[-]?[\\d]+[.][0]*", String.valueOf(val))) {
-                        inText.setText(String.valueOf((int) val));
-                    } else {
-                        inText.setText(String.valueOf(val));
-                    }
-
-                    opt = '-';
-                    go = false;
-                    addWrite = false;
-                } else {
-                    opt = '-';
-                }
-        });
-
-        btn1 = initBtn("1", x[0], y[4], event -> {
-            repaintFont();
-            if (addWrite) {
-                if (Pattern.matches("[0]*", inText.getText())) {
-                    inText.setText("1");
-                } else {
-                    inText.setText(inText.getText() + "1");
-                }
-            } else {
-                inText.setText("1");
-                addWrite = true;
-            }
-            go = true;
-        });
-
-        btn2 = initBtn("2", x[1], y[4], event -> {
-            repaintFont();
-            if (addWrite) {
-                if (Pattern.matches("[0]*", inText.getText())) {
-                    inText.setText("2");
-                } else {
-                    inText.setText(inText.getText() + "2");
-                }
-            } else {
-                inText.setText("2");
-                addWrite = true;
-            }
-            go = true;
-        });
-
-        btn3 = initBtn("3", x[2], y[4], event -> {
-            repaintFont();
-            if (addWrite) {
-                if (Pattern.matches("[0]*", inText.getText())) {
-                    inText.setText("3");
-                } else {
-                    inText.setText(inText.getText() + "3");
-                }
-            } else {
-                inText.setText("3");
-                addWrite = true;
-            }
-            go = true;
-        });
-
-        btnAdd = initBtn("+", x[3], y[4], event -> {
-            repaintFont();
-            if (Pattern.matches("([-]?\\d+[.]\\d*)|(\\d+)", inText.getText()))
-                if (go) {
-                    val = calc(val, inText.getText(), opt);
-                    if (Pattern.matches("[-]?[\\d]+[.][0]*", String.valueOf(val))) {
-                        inText.setText(String.valueOf((int) val));
-                    } else {
-                        inText.setText(String.valueOf(val));
-                    }
-                    opt = '+';
-                    go = false;
-                    addWrite = false;
-                } else {
-                    opt = '+';
-                }
-        });
-
-        btnPoint = initBtn(".", x[1], y[5], event -> {
-            repaintFont();
-            if (addWrite) {
-                if (!inText.getText().contains(".")) {
-                    inText.setText(inText.getText() + ".");
-                }
-            } else {
-                inText.setText("0.");
-                addWrite = true;
-            }
-            go = true;
-        });
-
-        btn0 = initBtn("0", x[0], y[5], event -> {
-            repaintFont();
-            if (addWrite) {
-                if (Pattern.matches("[0]*", inText.getText())) {
-                    inText.setText("0");
-                } else {
-                    inText.setText(inText.getText() + "0");
-                }
-            } else {
-                inText.setText("0");
-                addWrite = true;
-            }
-            go = true;
-        });
-
-        btnEqual = initBtn("=", x[2], y[5], event -> {
-            if (Pattern.matches("([-]?\\d+[.]\\d*)|(\\d+)", inText.getText()))
-                if (go) {
-                    val = calc(val, inText.getText(), opt);
-                    if (Pattern.matches("[-]?[\\d]+[.][0]*", String.valueOf(val))) {
-                        inText.setText(String.valueOf((int) val));
-                    } else {
-                        inText.setText(String.valueOf(val));
-                    }
-                    opt = '=';
-                    addWrite = false;
-                }
-        });
-        btnEqual.setSize(2 * BUTTON_WIDTH + 10, BUTTON_HEIGHT);
-
-        btnRoot = initBtn("sqrt", x[4], y[1], event -> {
-            if (Pattern.matches("([-]?\\d+[.]\\d*)|(\\d+)", inText.getText()))
-                if (go) {
-                    val = Math.sqrt(Double.parseDouble(inText.getText()));
-                    if (Pattern.matches("[-]?[\\d]+[.][0]*", String.valueOf(val))) {
-                        inText.setText(String.valueOf((int) val));
-                    } else {
-                        inText.setText(String.valueOf(val));
-                    }
-                    opt = '√';
-                    addWrite = false;
-                }
-        });
-        btnRoot.setVisible(false);
-
-        btnPower = initBtn("pow", x[4], y[2], event -> {
-            repaintFont();
-            if (Pattern.matches("([-]?\\d+[.]\\d*)|(\\d+)", inText.getText()))
-                if (go) {
-                    val = calc(val, inText.getText(), opt);
-                    if (Pattern.matches("[-]?[\\d]+[.][0]*", String.valueOf(val))) {
-                        inText.setText(String.valueOf((int) val));
-                    } else {
-                        inText.setText(String.valueOf(val));
-                    }
-                    opt = '^';
-                    go = false;
-                    addWrite = false;
-                } else {
-                    opt = '^';
-                }
-        });
-        btnPower.setFont(new Font("Tahoma", Font.PLAIN, 24));
-        btnPower.setVisible(false);
-
-        btnLog = initBtn("ln", x[4], y[3], event -> {
-            if (Pattern.matches("([-]?\\d+[.]\\d*)|(\\d+)", inText.getText()))
-                if (go) {
-                    val = Math.log(Double.parseDouble(inText.getText()));
-                    if (Pattern.matches("[-]?[\\d]+[.][0]*", String.valueOf(val))) {
-                        inText.setText(String.valueOf((int) val));
-                    } else {
-                        inText.setText(String.valueOf(val));
-                    }
-                    opt = 'l';
-                    addWrite = false;
-                }
-        });
-        btnLog.setVisible(false);
-
-        window.setLayout(null);
-        window.setResizable(false);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close button clicked? = End The process
-        window.setVisible(true);
-
-	}
-	private JComboBox<String> initCombo(String[] items, int x, int y, String toolTip, Consumer consumerEvent) {
-        JComboBox<String> combo = new JComboBox<>(items);
-        combo.setBounds(x, y, 140, 25);
-        combo.setToolTipText(toolTip);
-        combo.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        combo.addItemListener(consumerEvent::accept);
-        window.add(combo);
-
-        return combo;
-    }
-    private JButton initBtn(String label, int x, int y, ActionListener event) {
-        JButton btn = new JButton(label);
-        btn.setBounds(x, y, BUTTON_WIDTH, BUTTON_HEIGHT);
-        btn.setFont(new Font("Tahoma", Font.PLAIN, 20));
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btn.addActionListener(event);
-        btn.setFocusable(false);
-        window.add(btn);
-
-        return btn;
-    }
-
-    public double calc(double x, String input, char opt) {
-        inText.setFont(inText.getFont().deriveFont(Font.PLAIN));
-        double y = Double.parseDouble(input);
-        switch (opt) {
-            case '+':
-                return x + y;
-            case '-':
-                return x - y;
-            case '*':
-                return x * y;
-            case '/':
-                return x / y;
-            case '%':
-                return x % y;
-            case '^':
-                return Math.pow(x, y);
-            default:
-                inText.setFont(inText.getFont().deriveFont(Font.PLAIN));
-                return y;
-        }
-    }
-
-    private void repaintFont() {
-        inText.setFont(inText.getFont().deriveFont(Font.PLAIN));
-    }
-
-    private Consumer<ItemEvent> calcTypeSwitchEventConsumer = event -> {
-        if (event.getStateChange() != ItemEvent.SELECTED) return;
-
-        String selectedItem = (String) event.getItem();
-        switch (selectedItem) {
-            case "Standard":
-                window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-                btnRoot.setVisible(false);
-                btnPower.setVisible(false);
-                btnLog.setVisible(false);
-                break;
-            case "Scientific":
-                window.setSize(WINDOW_WIDTH + 80, WINDOW_HEIGHT);
-                btnRoot.setVisible(true);
-                btnPower.setVisible(true);
-                btnLog.setVisible(true);
-                break;
-        }
-    };
-
-    private Consumer<ItemEvent> themeSwitchEventConsumer = event -> {
-        if (event.getStateChange() != ItemEvent.SELECTED) return;
-
-        String selectedTheme = (String) event.getItem();
-        switch (selectedTheme) {
-            case "Simple":
-                window.getContentPane().setBackground(null);
-                btnC.setBackground(null);
-                btnBack.setBackground(null);
-                btnMod.setBackground(null);
-                btnDiv.setBackground(null);
-                btnMul.setBackground(null);
-                btnSub.setBackground(null);
-                btnAdd.setBackground(null);
-                btnRoot.setBackground(null);
-                btnLog.setBackground(null);
-                btnPower.setBackground(null);
-                btnEqual.setBackground(null);
-                btn0.setBackground(null);
-                btn1.setBackground(null);
-                btn2.setBackground(null);
-                btn3.setBackground(null);
-                btn4.setBackground(null);
-                btn5.setBackground(null);
-                btn6.setBackground(null);
-                btn7.setBackground(null);
-                btn8.setBackground(null);
-                btn9.setBackground(null);
-                btnPoint.setBackground(null);
-
-                btnC.setForeground(Color.BLACK);
-                btnBack.setForeground(Color.BLACK);
-                btnMod.setForeground(Color.BLACK);
-                btnDiv.setForeground(Color.BLACK);
-                btnMul.setForeground(Color.BLACK);
-                btnSub.setForeground(Color.BLACK);
-                btnAdd.setForeground(Color.BLACK);
-                btnEqual.setForeground(Color.BLACK);
-                btnLog.setForeground(Color.BLACK);
-                btnPower.setForeground(Color.BLACK);
-                btnRoot.setForeground(Color.BLACK);
-                break;
-            case "Colored":
-                window.getContentPane().setBackground(null);
-                btnC.setBackground(Color.RED);
-                btnBack.setBackground(Color.ORANGE);
-                btnMod.setBackground(Color.GREEN);
-                btnDiv.setBackground(Color.PINK);
-                btnMul.setBackground(Color.PINK);
-                btnSub.setBackground(Color.PINK);
-                btnAdd.setBackground(Color.PINK);
-                btnRoot.setBackground(Color.PINK);
-                btnLog.setBackground(Color.PINK);
-                btnPower.setBackground(Color.PINK);
-                btnEqual.setBackground(Color.BLUE);
-                btn0.setBackground(Color.WHITE);
-                btn1.setBackground(Color.WHITE);
-                btn2.setBackground(Color.WHITE);
-                btn3.setBackground(Color.WHITE);
-                btn4.setBackground(Color.WHITE);
-                btn5.setBackground(Color.WHITE);
-                btn6.setBackground(Color.WHITE);
-                btn7.setBackground(Color.WHITE);
-                btn8.setBackground(Color.WHITE);
-                btn9.setBackground(Color.WHITE);
-                btnPoint.setBackground(Color.WHITE);
-
-                btnC.setForeground(Color.WHITE);
-                btnBack.setForeground(Color.WHITE);
-                btnMod.setForeground(Color.WHITE);
-                btnDiv.setForeground(Color.WHITE);
-                btnMul.setForeground(Color.WHITE);
-                btnSub.setForeground(Color.WHITE);
-                btnAdd.setForeground(Color.WHITE);
-                btnEqual.setForeground(Color.WHITE);
-                btnLog.setForeground(Color.WHITE);
-                btnPower.setForeground(Color.WHITE);
-                btnRoot.setForeground(Color.WHITE);
-                break;
-            case "DarkTheme":
-                final Color primaryDarkColor = new Color(141, 38, 99);
-                final Color secondaryDarkColor = new Color(171, 171, 171);
-
-                window.getContentPane().setBackground(new Color(68, 68, 68));
-                btn0.setBackground(secondaryDarkColor);
-                btn1.setBackground(secondaryDarkColor);
-                btn2.setBackground(secondaryDarkColor);
-                btn3.setBackground(secondaryDarkColor);
-                btn4.setBackground(secondaryDarkColor);
-                btn5.setBackground(secondaryDarkColor);
-                btn6.setBackground(secondaryDarkColor);
-                btn7.setBackground(secondaryDarkColor);
-                btn8.setBackground(secondaryDarkColor);
-                btn9.setBackground(secondaryDarkColor);
-                btnPoint.setBackground(secondaryDarkColor);
-
-                btnC.setForeground(secondaryDarkColor);
-                btnBack.setForeground(secondaryDarkColor);
-                btnMod.setForeground(secondaryDarkColor);
-                btnDiv.setForeground(secondaryDarkColor);
-                btnMul.setForeground(secondaryDarkColor);
-                btnSub.setForeground(secondaryDarkColor);
-                btnAdd.setForeground(secondaryDarkColor);
-                btnEqual.setForeground(secondaryDarkColor);
-                btnLog.setForeground(secondaryDarkColor);
-                btnPower.setForeground(secondaryDarkColor);
-                btnRoot.setForeground(secondaryDarkColor);
-                btnC.setBackground(primaryDarkColor);
-                btnBack.setBackground(primaryDarkColor);
-                btnMod.setBackground(primaryDarkColor);
-                btnDiv.setBackground(primaryDarkColor);
-                btnMul.setBackground(primaryDarkColor);
-                btnSub.setBackground(primaryDarkColor);
-                btnAdd.setBackground(primaryDarkColor);
-                btnRoot.setBackground(primaryDarkColor);
-                btnLog.setBackground(primaryDarkColor);
-                btnPower.setBackground(primaryDarkColor);
-                btnEqual.setBackground(primaryDarkColor);
-        }
-    };
-
-	/**
-	 * Main application.
-	 * @param args
+	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new Main();
-
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Main window = new Main();
+					window.frmCalculator.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
+	public double num,ans;
+	public int  oper;
+	private JLabel lbl1;
+	boolean calculated = false;
 
+	/**
+	 * Create the application.
+	 */
+	public Main() {
+		initialize();
+	}
+	public void arithmeticOper() {
+		switch(oper)
+		{
+		case 1://Addition
+			ans = num + Double.parseDouble(textField.getText());
+			textField.setText(Double.toString(ans));
+			break;
+		case 2://Subtraction
+			ans = num - Double.parseDouble(textField.getText());
+			textField.setText(Double.toString(ans));
+			break;
+		case 3://Multiplication
+			ans = num * Double.parseDouble(textField.getText());
+			textField.setText(Double.toString(ans));
+			break;
+		case 4://Division
+			ans = num / Double.parseDouble(textField.getText());
+			textField.setText(Double.toString(ans));
+			break;
+		}
+		calculated = true;
+	}
+	
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmCalculator = new JFrame();
+		frmCalculator.setResizable(false);
+		frmCalculator.setTitle("Calculator");
+		frmCalculator.setBounds(100, 100, 308, 390);
+		frmCalculator.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frmCalculator.getContentPane().setLayout(null);
+		
+		textField = new JTextField();
+		textField.setEditable(false);
+		textField.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		textField.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField.setBounds(10, 39, 270, 40);
+		frmCalculator.getContentPane().add(textField);
+		textField.setColumns(10);
+		
+		btnDiv = new JButton("/");
+		btnDiv.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				num = Double.parseDouble(textField.getText());
+				oper = 4;
+				textField.setText("");
+				lbl1.setText(num + "/");
+				calculated = false;
+			}
+		});
+		btnDiv.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnDiv.setBounds(220, 90, 60, 40);
+		frmCalculator.getContentPane().add(btnDiv);
+		
+		btnC = new JButton("C");
+		btnC.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				textField.setText("");
+				calculated = false;
+			}
+		});
+		btnC.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnC.setBounds(150, 90, 60, 40);
+		frmCalculator.getContentPane().add(btnC);
+		
+		btnBksp = new JButton("<--");
+		btnBksp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int length = textField.getText().length();
+				int number = textField.getText().length() - 1;
+				if(length > 0 && !calculated) {
+					StringBuilder back = new StringBuilder(textField.getText());
+					back.deleteCharAt(number);
+					textField.setText(back.toString());
+				}
+			}
+		});
+		btnBksp.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnBksp.setBounds(80, 90, 60, 40);
+		frmCalculator.getContentPane().add(btnBksp);
+		
+		btnMult = new JButton("*");
+		btnMult.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				num = Double.parseDouble(textField.getText());
+				oper = 3;
+				textField.setText("");
+				lbl1.setText(num + "*");
+				calculated = false;
+			}
+		});
+		btnMult.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnMult.setBounds(220, 141, 60, 40);
+		frmCalculator.getContentPane().add(btnMult);
+		
+		btn9 = new JButton("9");
+		btn9.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!calculated) {
+					textField.setText(textField.getText() + "9");
+				}
+			}
+		});
+		btn9.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn9.setBounds(150, 141, 60, 40);
+		frmCalculator.getContentPane().add(btn9);
+		
+		btn8 = new JButton("8");
+		btn8.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!calculated) {
+					textField.setText(textField.getText() + "8");
+				}
+			}
+		});
+		btn8.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn8.setBounds(80, 141, 60, 40);
+		frmCalculator.getContentPane().add(btn8);
+		
+		btn7 = new JButton("7");
+		btn7.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!calculated) {
+					textField.setText(textField.getText() + "7");
+				}
+			}
+		});
+		btn7.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn7.setBounds(10, 141, 60, 40);
+		frmCalculator.getContentPane().add(btn7);
+		
+		btn4 = new JButton("4");
+		btn4.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!calculated) {
+					textField.setText(textField.getText() + "4");
+				}
+			}
+		});
+		btn4.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn4.setBounds(10, 192, 60, 40);
+		frmCalculator.getContentPane().add(btn4);
+		
+		btn5 = new JButton("5");
+		btn5.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!calculated) {
+					textField.setText(textField.getText() + "5");
+				}
+			}
+		});
+		btn5.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn5.setBounds(80, 192, 60, 40);
+		frmCalculator.getContentPane().add(btn5);
+		
+		btn6 = new JButton("6");
+		btn6.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!calculated) {
+					textField.setText(textField.getText() + "6");
+				}
+			}
+		});
+		btn6.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn6.setBounds(150, 192, 60, 40);
+		frmCalculator.getContentPane().add(btn6);
+		
+		btnMinus = new JButton("-");
+		btnMinus.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				num = Double.parseDouble(textField.getText());
+				oper = 2;
+				textField.setText("");
+				lbl1.setText(num + "-");
+				calculated = false;
+			}
+		});
+		btnMinus.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnMinus.setBounds(220, 192, 60, 40);
+		frmCalculator.getContentPane().add(btnMinus);
+		
+		btnPlus = new JButton("+");
+		btnPlus.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				num = Double.parseDouble(textField.getText());
+				oper = 1;
+				textField.setText("");
+				lbl1.setText(num + "+");
+				calculated = false;
+			}
+		});
+		btnPlus.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnPlus.setBounds(220, 243, 60, 40);
+		frmCalculator.getContentPane().add(btnPlus);
+		
+		btn3 = new JButton("3");
+		btn3.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!calculated) {
+					textField.setText(textField.getText() + "3");
+				}
+			}
+		});
+		btn3.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn3.setBounds(150, 243, 60, 40);
+		frmCalculator.getContentPane().add(btn3);
+		
+		btn2 = new JButton("2");
+		btn2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!calculated) {
+					textField.setText(textField.getText() + "1");
+				}
+			}
+		});
+		btn2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn2.setBounds(80, 243, 60, 40);
+		frmCalculator.getContentPane().add(btn2);
+		
+		btn1 = new JButton("1");
+		btn1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!calculated) {
+					textField.setText(textField.getText() + "1");
+				}
+			}
+		});
+		btn1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn1.setBounds(10, 243, 60, 40);
+		frmCalculator.getContentPane().add(btn1);
+		
+		btn0 = new JButton("0");
+		btn0.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!calculated) {
+					textField.setText(textField.getText() + "0");
+				}
+			}
+		});
+		btn0.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn0.setBounds(10, 294, 60, 40);
+		frmCalculator.getContentPane().add(btn0);
+		
+		btnDot = new JButton(".");
+		btnDot.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String content = textField.getText();
+				if (!calculated && !content.contains(".")) {
+						textField.setText(textField.getText() + ".");
+				}
+			}
+		});
+		btnDot.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnDot.setBounds(80, 294, 60, 40);
+		frmCalculator.getContentPane().add(btnDot);
+		
+		btnEqual = new JButton("=");
+		btnEqual.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				arithmeticOper();
+				lbl1.setText("");
+			}
+		});
+		btnEqual.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnEqual.setBounds(150, 294, 130, 40);
+		frmCalculator.getContentPane().add(btnEqual);
+		
+		lbl1 = new JLabel("");
+		lbl1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbl1.setForeground(new Color(255, 0, 0));
+		lbl1.setBounds(191, 14, 89, 14);
+		frmCalculator.getContentPane().add(lbl1);
+	}
 }
